@@ -22,7 +22,7 @@ public class Test {
 		
 		//Set<Map.Entry<String, String>> entry = map.entrySet();
 
-		map.forEach((k,v)-> System.out.println("key "+k+""+" value "+v));
+		map.forEach((k,v)-> System.out.println(" "+k+""+" value "+v));
 		
 	}
 	
