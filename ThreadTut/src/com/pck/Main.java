@@ -4,17 +4,24 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
 	static Map<String, Integer> map = new HashMap<>();
 	static Map<String, Integer> map2 = new HashMap<>();
-	static String countList = "Afghanistan,Albania,Algeria,American Samoa,Andorra,Angola,Anguilla,Antarctica,Antigua and Barbuda,Argentina,Armenia,Aruba,Australia,Austria,Azerbaijan,Bahamas,Bahrain,Bangladesh,Barbados,Belarus,Belgium,Belize,Benin,Bermuda,Bhutan,Bolivia,Bosnia and Herzegovina,Botswana,Bouvet Island,Brazil,British Indian Ocean Territory,Brunei Darussalam,Bulgaria,Burkina Faso,Burundi,Cambodia,Cameroon,Canada,Cape Verde,Cayman Islands,Central African Republic,Chad,Chile,China,Christmas Island,Cocos (Keeling Islands),Colombia,Comoros,Congo,Cook Islands,Costa Rica,Cote D'Ivoire (Ivory Coast),Croatia (Hrvatska,Cuba,Cyprus,Czech Republic,Denmark,Djibouti,Dominica,Dominican Republic,East Timor,Ecuador,Egypt,El Salvador,Equatorial Guinea,Eritrea,Estonia,Ethiopia,Falkland Islands (Malvinas),Faroe Islands,Fiji,Finland,France,France, Metropolitan,French Guiana,French Polynesia,French Southern Territories,Gabon,Gambia,Georgia,Germany,Ghana,Gibraltar,Greece,Greenland,Grenada,Guadeloupe,Guam,Guatemala,Guinea,Guinea-Bissau,Guyana,Haiti,Heard and McDonald Islands,Honduras,Hong Kong,Hungary,Iceland,India,Indonesia,Iran,Iraq,Ireland,Israel,Italy,Jamaica,Japan,Jordan,Kazakhstan,Kenya,Kiribati,Korea (North),Korea (South),Kuwait,Kyrgyzstan,Laos,Latvia,Lebanon,Lesotho,Liberia,Libya,Liechtenstein,Lithuania,Luxembourg,Macau,Macedonia,Madagascar,Malawi,Malaysia,Maldives,Mali,Malta,Marshall Islands,Martinique,Mauritania,Mauritius,Mayotte,Mexico,Micronesia,Moldova,Monaco,Mongolia,Montserrat,Morocco,Mozambique,Myanmar,Namibia,Nauru,Nepal,Netherlands,Netherlands Antilles,New Caledonia,New Zealand,Nicaragua,Niger,Nigeria,Niue,Norfolk Island,Northern Mariana Islands,Norway,Oman,Pakistan,Palau,Panama,Papua New Guinea,Paraguay,Peru,Philippines,Pitcairn,Poland,Portugal,Puerto Rico,Qatar,Reunion,Romania,Russian Federation,Rwanda,Saint Kitts and Nevis,Saint Lucia,Saint Vincent and The Grenadines,Samoa,San Marino,Sao Tome and Principe,Saudi Arabia,Senegal,Seychelles,Sierra Leone,Singapore,Slovak Republic,Slovenia,Solomon Islands,Somalia,South Africa,S. Georgia and S. Sandwich Isls.,Spain,Sri Lanka,St. Helena,St. Pierre and Miquelon,Sudan,Suriname,Svalbard and Jan Mayen Islands,Swaziland,Sweden,Switzerland,Syria,Taiwan,Tajikistan,Tanzania,Thailand,Togo,Tokelau,Tonga,Trinidad and Tobago,Tunisia,Turkey,Turkmenistan,Turks and Caicos Islands,Tuvalu,Uganda,Ukraine,United Arab Emirates,United Kingdom,United States,US Minor Outlying Islands,Uruguay,Uzbekistan,Vanuatu,Vatican City State (Holy See),Venezuela,Viet Nam,Virgin Islands (British),Virgin Islands (US),Wallis and Futuna Islands,Western Sahara,Yemen,Yugoslavia,Zaire,Zambia,Zimbabwe";
+	
 
-	static Map preparemap() {
+	static String preparemap(String key) {
 
-		map.put("/.@", 1);
+		
+		
+		map.put("/:.@ ", 1);
 		map.put("ABC", 2);
 		map.put("DEF", 3);
 		map.put("GHI", 4);
@@ -24,10 +31,21 @@ public class Main {
 		map.put("TUV", 8);
 		map.put("WXYZ", 9);
 
-		return map;
+		Set<Map.Entry<String, Integer>> setChck =  map.entrySet(); 
+		
+		Iterator<Entry<String, Integer>> it = setChck.iterator();
+		
+		while(it.hasNext()){
+			Entry<String, Integer> t = it.next();
+			if(t.getKey().contains(key)){
+				return t.getValue()+"";
+			}
+		}
+		
+		return "pan"+key;
 	}
 
-	static Integer preparemap2(String key) {
+	static String preparemap2(String key) {
 
 		map2.put("A", 1);
 		map2.put("B", 2);
@@ -55,8 +73,14 @@ public class Main {
 		map2.put("X", 24);
 		map2.put("Y", 25);
 		map2.put("Z", 26);
-
-		return map2.get(key);
+		map2.put("/", 27);
+		map2.put(":", 28);
+		map2.put(".", 29);
+		map2.put("@", 30);
+		map2.put(" ", 31);
+		map2.put("-", 31);
+		return map2.get(key)!=null?map2.get(key)+"":"age"+key;
+		
 	}
 
 	public static String getCountry(String s) throws Exception {
@@ -65,17 +89,56 @@ public class Main {
 		Map<String, String> map = new HashMap<>();
 		String ss = "";
 		while ((ss = br.readLine()) != null) {
+			ss=ss.replace(" ", "");
 			map.put(ss.toCharArray()[ss.toCharArray().length - ss.toCharArray().length] + "", ss);
 		}
 
 		// Set<Map.Entry<String, String>> entry = map.entrySet();
 
-		return map.get(s);
+		//map.forEach((k,v)->System.out.println("key is :"+k+" value is :"+v));
+		
+		String finalString = map.get(s);
+
+		return Objects.nonNull(finalString)?finalString:"car"+s;
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
+
+		String test = "https://stackoverflow.com/questions/3382954/measure-execution-time-for-a-java-method";
+		char[] msgarray = test.toCharArray();
+		String msg = "";
+
+		long startTime = System.currentTimeMillis();
+		for (int i = 0, j = 0; i <= test.toCharArray().length-1; i++,j++) {
+
+			if (j > 2) {
+				j = 0;
+			}
+			
+			if(j==0){
+			msg = msg + " " + getCountry(new String(msgarray[i] + "").toUpperCase());
+		
+			}
+			if(j==1){
+				msg = msg + " " + preparemap2(new String(msgarray[i] + "").toUpperCase());
+			}
+			
+			if(j==2){
+				msg = msg + " " + preparemap(new String(msgarray[i] + "").toUpperCase());
+			}
+
+		}
+		
+	      long stopTime = System.currentTimeMillis();
+	      long elapsedTime = stopTime - startTime;
+
+	     System.out.println("time taken : "+TimeUnit.SECONDS.convert(elapsedTime, TimeUnit.NANOSECONDS));
+	     
+	  //    System.out.println(1e+9);
+	      
+		System.out.println(msg);
 
 	}
 
